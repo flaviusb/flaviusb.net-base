@@ -2,11 +2,11 @@
 
 set -e
 
-realbloglocation=`readlink -f $bloglocation`
-realblogout=`readlink -f $blogout`
+export realbloglocation=`readlink -f $bloglocation`
+export realblogout=`readlink -f $blogout`
 #invokedfrom=`pwd`
 codeloc_temp=`readlink -f ${BASH_SOURCE[0]}`
-codeloc=`dirname $codeloc_temp`
+export codeloc=`dirname $codeloc_temp`
 #echo $codeloc
 
 cd $realbloglocation
@@ -31,6 +31,8 @@ do
 $PUBLISHDATE $i"
 done
 #echo "$DATEDNAME"
-SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
-#echo "$SORTED_NAME"
+export SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
+# Now generate index
+
+echo $($codeloc/blog-index-page.sh) > "$realblogout/index.html"
 
