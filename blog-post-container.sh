@@ -9,6 +9,7 @@ cat <<END
   </head>
   <body>
 <h1>$TITLE</h1>
+$DATETEXT
 $TEXT
 <p><a href="https://flaviusb.net/">Home</a>  |  <a href="https://flaviusb.net/blog/">Blog</a>  |  <a href="https://github.com/flaviusb">Code</a></p>
   </body>
