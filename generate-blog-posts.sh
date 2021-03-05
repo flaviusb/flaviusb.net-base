@@ -19,6 +19,19 @@ do
   PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
   EDITDATE=`git log --branches=[p]ublish --pretty=format:%as -n 1 -- $i`
   echo $(. $i; export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-section.sh; $codeloc/blog-post-container.sh) > $location
+  # Now we do all the past versions for the page
+  HASHES=`git log --branches=[p]ublish --pretty=format:%H --skip 1 -- $i`
+  if [ -n "$HASHES" ]
+  then
+    for h in $HASHES
+    do
+      mkdir -p "$realblogout/$(. $i; echo $CANONICAL)/"
+      location="$realblogout/$(. $i; echo $CANONICAL)/${h}.html"
+      PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
+      EDITDATE=`git log --pretty=format:%as -n 1 $h` # ← --branch interacts in a way that does not make sense to me with using a commit sha
+      echo $(source <(git cat-file --textconv ${HASHES}:${i}); export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-past-version.sh; $codeloc/blog-post-container.sh) > $location
+    done
+  fi
 done
 
 DATEDNAME=
