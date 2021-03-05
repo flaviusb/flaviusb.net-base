@@ -16,8 +16,20 @@ do
   do
     TAGSET+="<a href=\"https://flaviusb.net/tags/$t\">$t</a> "
   done
+  VERSIONS=
+  HASHES=`git log --branches=[p]ublish --reverse --pretty=format:%H --skip 1 $i`
+  if [ -n "$HASHES" ]
+  then
+    VERSIONS=" <span>Older versions: "
+    for h in $HASHES
+    do
+      THIS_DATE=`git log --pretty=format:%as $h`
+      VERSIONS+=" <a href=\"https://flaviusb.net/blog/${CANONICAL}/${h}.html\">$THIS_DATE</a>"
+    done
+    VERSIONS+="</span>"
+  fi
   cat <<END
-<li><span class="date">$PUBLISHDATE</span> » <a href="https://flaviusb.net/blog/${CANONICAL}.html">$TITLE</a>    <span>$TAGSET</span></li>
+<li><span class="date">$PUBLISHDATE</span> » <a href="https://flaviusb.net/blog/${CANONICAL}.html">$TITLE</a>    <span>$TAGSET</span>$VERSIONS</li>
 END
 )
 done
