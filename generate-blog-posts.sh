@@ -9,13 +9,15 @@ codeloc_temp=`readlink -f ${BASH_SOURCE[0]}`
 export codeloc=`dirname $codeloc_temp`
 #echo $codeloc
 
+mkdir -p $realblogout/posts
+mkdir -p $realblogout/tags
 cd $realbloglocation
 
 relevantfiles=`git ls-files *.sh`
 #echo $relevantfiles
 for i in $relevantfiles
 do
-  location="$realblogout/$(. $i; echo $CANONICAL).html"
+  location="$realblogout/posts/$(. $i; echo $CANONICAL).html"
   PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
   EDITDATE=`git log --branches=[p]ublish --pretty=format:%as -n 1 -- $i`
   echo $(. $i; export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-section.sh; $codeloc/blog-post-container.sh) > $location
@@ -25,8 +27,8 @@ do
   then
     for h in $HASHES
     do
-      mkdir -p "$realblogout/$(. $i; echo $CANONICAL)/"
-      location="$realblogout/$(. $i; echo $CANONICAL)/${h}.html"
+      mkdir -p "$realblogout/posts/$(. $i; echo $CANONICAL)/"
+      location="$realblogout/posts/$(. $i; echo $CANONICAL)/${h}.html"
       PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
       EDITDATE=`git log --pretty=format:%as -n 1 $h` # ← --branch interacts in a way that does not make sense to me with using a commit sha
       echo $(source <(git cat-file --textconv ${HASHES}:${i}); export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-past-version.sh; $codeloc/blog-post-container.sh) > $location
