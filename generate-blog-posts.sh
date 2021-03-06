@@ -79,4 +79,5 @@ done
 
 # Copy files over
 
-cp "$codeloc/files/syntax.css" "$realbaseout/syntax.css"
+cp "$codeloc/files/syntax.css"  "$realbaseout/syntax.css"
+cp "$codeloc/files/favicon.png" "$realbaseout/favicon.png"
