@@ -39,6 +39,10 @@ cat <<END
   <head>
     <meta charset="utf-8">
     <title>Post Index: $BY</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="https://flaviusb.net/favicon.ico" type="image/x-icon"/>
+    <link href="https://flaviusb.net/blog/atom.xml" type="application/atom+xml" rel="alternate" title="Blog Atom Feed" />
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
   </head>
   <body>
 <h1>Post Index: $BY</h1>

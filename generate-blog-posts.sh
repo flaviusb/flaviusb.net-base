@@ -82,3 +82,18 @@ done
 cp "$codeloc/files/syntax.css"  "$realbaseout/syntax.css"
 cp "$codeloc/files/favicon.png" "$realbaseout/favicon.png"
 cp "$codeloc/files/favicon.ico" "$realbaseout/favicon.ico"
+
+# Generate atom feed
+DATEDNAME=
+for i in $relevantfiles
+do
+  PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
+  EDITDATE=`git log --branches=[p]ublish --pretty=format:%as -n 1 -- $i`
+  #echo $i $DATE
+  DATEDNAME="${DATEDNAME}
+$EDITDATE $i"
+done
+
+export SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
+echo $($codeloc/build-atom.sh) > "$realblogout/atom.xml"
+
