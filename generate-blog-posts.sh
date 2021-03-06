@@ -4,6 +4,7 @@ set -e
 
 export realbloglocation=`readlink -f $bloglocation`
 export realblogout=`readlink -f $blogout`
+export realbaseout=`readlink -f $baseout`
 #invokedfrom=`pwd`
 codeloc_temp=`readlink -f ${BASH_SOURCE[0]}`
 export codeloc=`dirname $codeloc_temp`
@@ -76,3 +77,6 @@ do
   echo $(export BY=$BY; $codeloc/blog-index-page.sh) > "$realblogout/tags/$i/index.html"
 done
 
+# Copy files over
+
+cp "$codeloc/files/syntax.css" "$realbaseout/syntax.css"
