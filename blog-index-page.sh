@@ -4,7 +4,6 @@ set -e
 
 cd $realbloglocation
 
-BY="All posts by publication date"
 TEXT=
 JUST_NAMES=`echo "$SORTED_NAME" | awk {'print $2'}`
 for i in $JUST_NAMES

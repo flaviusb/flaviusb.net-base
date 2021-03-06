@@ -49,5 +49,30 @@ done
 export SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
 # Now generate index
 
-echo $($codeloc/blog-index-page.sh) > "$realblogout/index.html"
+BY="All posts by publication date"
+
+echo $(export BY=$BY; $codeloc/blog-index-page.sh) > "$realblogout/index.html"
+
+# Now generate tag index pages
+
+declare -A tags
+
+for i in $relevantfiles
+do
+  TAG=$(. $i; echo $TAGS)
+  PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
+  for atag in $TAG
+  do
+    tags[${atag}]="${tags[${atag}]}
+$PUBLISHDATE $i"
+  done
+done
+for i in ${!tags[@]}
+do
+  BY="All posts tagged '$i' by publication date"
+  SORTED_NAME=`echo "${tags[$i]}" | sort -r`
+  #echo "$i: ${tags[$i]}"
+  mkdir -p "$realblogout/tags/$i/"
+  echo $(export BY=$BY; $codeloc/blog-index-page.sh) > "$realblogout/tags/$i/index.html"
+done
 
