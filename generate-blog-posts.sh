@@ -21,7 +21,7 @@ do
   location="$realblogout/posts/$(. $i; echo $CANONICAL).html"
   PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
   EDITDATE=`git log --branches=[p]ublish --pretty=format:%as -n 1 -- $i`
-  echo $(. $i; export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-section.sh; $codeloc/blog-post-container.sh) > $location
+  echo "$(. $i; export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-section.sh; $codeloc/blog-post-container.sh)" > $location
   # Now we do all the past versions for the page
   HASHES=`git log --branches=[p]ublish --pretty=format:%H --skip 1 -- $i`
   if [ -n "$HASHES" ]
@@ -32,7 +32,7 @@ do
       location="$realblogout/posts/$(. $i; echo $CANONICAL)/${h}.html"
       PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
       EDITDATE=`git log --pretty=format:%as -n 1 $h` # ← --branch interacts in a way that does not make sense to me with using a commit sha
-      echo $(source <(git cat-file --textconv ${HASHES}:${i}); export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-past-version.sh; $codeloc/blog-post-container.sh) > $location
+      echo "$(source <(git cat-file --textconv ${HASHES}:${i}); export PUBLISHDATE="$PUBLISHDATE"; export EDITDATE="$EDITDATE"; . $codeloc/date-past-version.sh; $codeloc/blog-post-container.sh)" > $location
     done
   fi
 done
@@ -52,7 +52,7 @@ export SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
 
 BY="All posts by publication date"
 
-echo $(export BY=$BY; $codeloc/blog-index-page.sh) > "$realblogout/index.html"
+echo "$(export BY=$BY; $codeloc/blog-index-page.sh)" > "$realblogout/index.html"
 
 # Now generate tag index pages
 
@@ -74,7 +74,7 @@ do
   SORTED_NAME=`echo "${tags[$i]}" | sort -r`
   #echo "$i: ${tags[$i]}"
   mkdir -p "$realblogout/tags/$i/"
-  echo $(export BY=$BY; $codeloc/blog-index-page.sh) > "$realblogout/tags/$i/index.html"
+  echo "$(export BY=$BY; $codeloc/blog-index-page.sh)" > "$realblogout/tags/$i/index.html"
 done
 
 # Copy files over
@@ -88,12 +88,12 @@ DATEDNAME=
 for i in $relevantfiles
 do
   PUBLISHDATE=`git log --branches=[p]ublish --pretty=format:%as -- $i | tail -n 1`
-  EDITDATE=`git log --branches=[p]ublish --pretty=format:%as -n 1 -- $i`
+  EDITDATE=`git log --branches=[p]ublish --pretty=format:%aI -n 1 -- $i`
   #echo $i $DATE
   DATEDNAME="${DATEDNAME}
 $EDITDATE $i"
 done
 
 export SORTED_NAME=`echo "${DATEDNAME}" | sort -r`
-echo $($codeloc/build-atom.sh) > "$realblogout/atom.xml"
+echo "$($codeloc/build-atom.sh)" > "$realblogout/atom.xml"
 
