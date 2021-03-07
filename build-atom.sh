@@ -11,10 +11,9 @@ do
   cat <<END
   <entry>
     <title>$TITLE</title>
-    <link href="htps://flaviusb.net/blog/posts/${CANONICAL}.html"/>
-    <id>htps://flaviusb.net/blog/posts/${CANONICAL}.html</id>
+    <link href="https://flaviusb.net/blog/posts/${CANONICAL}.html"/>
+    <id>https://flaviusb.net/blog/posts/${CANONICAL}.html</id>
     <updated>$EDITDATE</updated>
-    <summary></summary>
   </entry>
 END
 )
@@ -24,11 +23,12 @@ cat <<END
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>@flaviusb's blog posts</title>
   <link href="https://flaviusb.net/blog/"/>
+  <link href="https://flaviusb.net/blog/atom.xml" rel="self"/>
   <updated>$LATESTUPDATE</updated>
   <author>
     <name>Justin (@flaviusb) Marsh</name>
   </author>
-  <id>https://flaviusb.net</id>
+  <id>https://flaviusb.net/</id>
 $ENTRIES
 </feed>
 END
